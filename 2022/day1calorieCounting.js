@@ -63,16 +63,21 @@ const getSum = async (arr) => {
 const getMaxCal = async () => {
   const arrayOfCalories = await getListOfElves()
 
-  let max = 0
+  const sums = []
 
   for (let i = 0; i < arrayOfCalories.length; i++) {
     const sum = await getSum(arrayOfCalories[i])
-    max = Math.max(sum, max)
+    sums.push(sum)
   }
 
-  return max
+  return sums
 }
 
 getMaxCal().then((data) => {
-  console.log(data)
+  data = data.sort((a, b) => a - b)
+  const max = data[data.length-1]
+  const topThree = getSum([data[data.length-1], data[data.length-2], data[data.length-3]])
+
+  console.log("Max cal elf ->", max)
+  console.log("Sum of top three cal elves ->", topThree)
 })
