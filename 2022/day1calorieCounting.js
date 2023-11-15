@@ -41,54 +41,57 @@ Find the top three Elves carrying the most Calories. How many Calories are those
 
 */
 
-const fs = require("fs/promises")
+const fs = require("fs/promises");
 
 const getListOfElves = async () => {
-  let list = await fs.readFile("./data/day1calories.txt", "utf-8")
-  list = list.split("\n")
+  let list = await fs.readFile("./data/day1calories.txt", "utf-8");
+  list = list.split("\n");
 
-  const finalList = []
-  let temp = []
+  const finalList = [];
+  let temp = [];
   for (let i = 0; i < list.length; i++) {
-    if(list[i] !== "") temp.push(+list[i])
+    if (list[i] !== "") temp.push(+list[i]);
     else {
-      finalList.push(temp)
-      temp = []
+      finalList.push(temp);
+      temp = [];
     }
   }
 
-  return finalList
-}
+  return finalList;
+};
 
 const getSum = (arr) => {
-  let sum = 0
+  let sum = 0;
 
   for (let i = 0; i < arr.length; i++) {
-    sum += arr[i]
+    sum += arr[i];
   }
 
-  return sum
-}
+  return sum;
+};
 
 const getMaxCal = async () => {
-  const arrayOfCalories = await getListOfElves()
+  const arrayOfCalories = await getListOfElves();
 
-  const sums = []
+  const sums = [];
 
   for (let i = 0; i < arrayOfCalories.length; i++) {
-    const sum = getSum(arrayOfCalories[i])
-    sums.push(sum)
+    const sum = getSum(arrayOfCalories[i]);
+    sums.push(sum);
   }
 
-  return sums
-}
-
+  return sums;
+};
 
 getMaxCal().then((data) => {
-  data = data.sort((a, b) => a - b)
-  const max = data[data.length-1]
-  const topThree = getSum([data[data.length-1], data[data.length-2], data[data.length-3]])
+  data = data.sort((a, b) => a - b);
+  const max = data[data.length - 1];
+  const topThree = getSum([
+    data[data.length - 1],
+    data[data.length - 2],
+    data[data.length - 3],
+  ]);
 
-  console.log("Max cal elf ->", max)
-  console.log("Sum of top three cal elves ->", topThree)
-})
+  console.log("Max cal elf ->", max);
+  console.log("Sum of top three cal elves ->", topThree);
+});

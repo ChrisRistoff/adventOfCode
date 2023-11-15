@@ -97,22 +97,21 @@ const getDupeLetters = async (items) => {
 };
 
 const getBadges = async (items) => {
-  const res = []
+  const res = [];
 
-  for (let i = 0; i < items.length; i+= 3) {
-
-    const item2 = new Set(items[i+1])
-    const item3 = new Set(items[i+2])
+  for (let i = 0; i < items.length; i += 3) {
+    const item2 = new Set(items[i + 1]);
+    const item3 = new Set(items[i + 2]);
     for (let item of items[i]) {
       if (item2.has(item) && item3.has(item)) {
-        res.push(item)
-        break
+        res.push(item);
+        break;
       }
     }
   }
 
-  return res
-}
+  return res;
+};
 
 const calculateTotal = async (itemList) => {
   let sum = 0;

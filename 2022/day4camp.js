@@ -36,46 +36,62 @@ This example list uses single-digit section IDs to make it easier to draw; your 
 .23456...  2-6
 ...45678.  4-8
 Some of the pairs have noticed that one of their assignments fully contains the other. For example, 2-8 fully contains 3-7, and 6-6 is fully contained by 4-6. In pairs where one assignment fully contains the other, one Elf in the pair would be exclusively cleaning sections their partner will already be cleaning, so these seem like the most in need of reconsideration. In this example, there are 2 such pairs.
+
+--- Part Two ---
+It seems like there is still quite a bit of duplicate work planned. Instead, the Elves would like to know the number of pairs that overlap at all.
+
+In the above example, the first two pairs (2-4,6-8 and 2-3,4-5) don't overlap, while the remaining four pairs (5-7,7-9, 2-8,3-7, 6-6,4-6, and 2-6,4-8) do overlap:
+
+5-7,7-9 overlaps in a single section, 7.
+2-8,3-7 overlaps all of the sections 3 through 7.
+6-6,4-6 overlaps in a single section, 6.
+2-6,4-8 overlaps in sections 4, 5, and 6.
+So, in this example, the number of overlapping assignment pairs is 4.
 */
 
-const fs = require("fs/promises")
+const fs = require("fs/promises");
 
-const getItems = async() => {
-  const items = await fs.readFile("./data/day4camp.txt", "utf-8")
+const getItems = async () => {
+  const items = await fs.readFile("./data/day4camp.txt", "utf-8");
 
-  return items.split("\n")
-}
+  return items.split("\n");
+};
 
 const getCount = async (items) => {
-  let count = 0
+  let count = 0;
   for (let i = 0; i < items.length; i++) {
     const item = items[i].split(",");
-    const item1 = item[0].split("-")
-    const item2 = item[1].split("-")
+    const item1 = item[0].split("-");
+    const item2 = item[1].split("-");
 
-    if(+item1[0] <= +item2[0] && +item1[1] >= +item2[1]) {
-      count++
-      console.log(item)
-    }
-    else if(+item1[0] >= +item2[0] && +item1[1] <= +item2[1]) {
-      count++
-      console.log(item)
-    }
+    if (+item1[0] <= +item2[0] && +item1[1] >= +item2[1]) count++;
+    if (+item1[0] >= +item2[0] && +item1[1] <= +item2[1]) count++;
   }
+  return count;
+};
 
-  return count
-}
+const getOverlapCount = async (items) => {
+  let count = 0;
 
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i].split(",");
+    const item1 = item[0].split("-");
+    const item2 = item[1].split("-");
 
+    if (+item1[0] >= +item2[0] && +item1[0] <= +item2[1]) count++;
+    else if (+item2[0] >= +item1[0] && +item2[0] <= +item1[1]) count++;
+  }
+  return count;
+};
 
-const main = async() => {
-  const items = await getItems()
-  items.pop()
-  const res = await getCount(items)
+const main = async () => {
+  const items = await getItems();
+  items.pop();
+  const res = await getOverlapCount(items);
 
-  return res
-}
+  return res;
+};
 
 main().then((res) => {
-  console.log(res)
-})
+  console.log(res);
+});
