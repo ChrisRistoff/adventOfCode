@@ -96,12 +96,23 @@ const getDupeLetters = async (items) => {
   return res;
 };
 
-const getBadges = async ((items) => {
+const getBadges = async (items) => {
   const res = []
 
   for (let i = 0; i < items.length; i+= 3) {
+
+    const item2 = new Set(items[i+1])
+    const item3 = new Set(items[i+2])
+    for (let item of items[i]) {
+      if (item2.has(item) && item3.has(item)) {
+        res.push(item)
+        break
+      }
+    }
   }
-})
+
+  return res
+}
 
 const calculateTotal = async (itemList) => {
   let sum = 0;
@@ -121,7 +132,7 @@ const calculateTotal = async (itemList) => {
 const main = async () => {
   const allItems = await getAllItems();
 
-  const dupeItems = await getDupeLetters(allItems);
+  const dupeItems = await getBadges(allItems);
   const total = await calculateTotal(dupeItems);
 
   return total;
