@@ -46,7 +46,49 @@ Finally, one crate is moved from stack 1 to stack 2:
 [C] [M] [P]
  1   2   3
 The Elves just need to know which crate will end up on top of each stack; in this example, the top crates are C in stack 1, M in stack 2, and Z in stack 3, so you should combine these together and give the Elves the message CMZ.
- */
+
+--- Part Two ---
+As you watch the crane operator expertly rearrange the crates, you notice the process isn't following your prediction.
+
+Some mud was covering the writing on the side of the crane, and you quickly wipe it away. The crane isn't a CrateMover 9000 - it's a CrateMover 9001.
+
+The CrateMover 9001 is notable for many new and exciting features: air conditioning, leather seats, an extra cup holder, and the ability to pick up and move multiple crates at once.
+
+Again considering the example above, the crates begin in the same configuration:
+
+    [D]
+[N] [C]
+[Z] [M] [P]
+ 1   2   3
+Moving a single crate from stack 2 to stack 1 behaves the same as before:
+
+[D]
+[N] [C]
+[Z] [M] [P]
+ 1   2   3
+However, the action of moving three crates from stack 1 to stack 3 means that those three moved crates stay in the same order, resulting in this new configuration:
+
+        [D]
+        [N]
+    [C] [Z]
+    [M] [P]
+ 1   2   3
+Next, as both crates are moved from stack 2 to stack 1, they retain their order as well:
+
+        [D]
+        [N]
+[C]     [Z]
+[M]     [P]
+ 1   2   3
+Finally, a single crate is still moved from stack 1 to stack 2, but now it's crate C that gets moved:
+
+        [D]
+        [N]
+        [Z]
+[M] [C] [P]
+ 1   2   3
+In this example, the CrateMover 9001 has put the crates in a totally different order: MCD.
+*/
 
 const { resolve4 } = require("dns");
 const fs = require("fs/promises");
@@ -71,11 +113,13 @@ const getCrates = async (items) => {
   const stack = {};
   console.log(ind);
   for (let i = ind; i >= 0; i--) {
+
     for (let j = 0; j < items[i].length; j++) {
-      console.log(items[i][j]);
       if (items[i][j] === "[") {
+
         if (!stack[line[j + 1]]) {
           stack[line[j + 1]] = [items[i][j + 1]];
+
         } else {
           stack[line[j + 1]].push(items[i][j + 1]);
         }
@@ -117,22 +161,35 @@ const moveCrates = async (crates, moves) => {
   return crates;
 };
 
-const getLastCrates = async (crates) => {
-  let res = ""
-  for (const key in crates) {
-    res += crates[key][crates[key].length - 1]
+const moveCrates2 = async (crates, moves) => {
+  for (let move of moves) {
+    const temp = [];
+    for (let i = 0; i < move[0]; i++) {
+      temp.push(crates[move[1]].pop());
+    }
+
+    temp.reverse();
+    crates[move[2]] = [...crates[move[2]], ...temp];
   }
 
-  return res
-}
+  return crates;
+};
+
+const getLastCrates = async (crates) => {
+  let res = "";
+  for (const key in crates) {
+    res += crates[key][crates[key].length - 1];
+  }
+  return res;
+};
 
 const main = async () => {
   const items = await parse();
   items.pop();
   const crates = await getCrates(items);
   const moves = await getMoves(items);
-  const moved = await moveCrates(crates, moves);
-  const lastCrates = await getLastCrates(moved)
+  const moved = await moveCrates2(crates, moves);
+  const lastCrates = await getLastCrates(moved);
 
   return lastCrates;
 };
