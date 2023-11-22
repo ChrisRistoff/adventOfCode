@@ -81,55 +81,47 @@ const getData = async () => {
 
 const getSize = async (data) => {
   const dirs = {};
-  const dirStack = ["/"]
-  dirs["/"] = 0
+  const dirStack = ["/"];
+  dirs["/"] = 0;
 
-  for (let i = 1; i < data.length; i++) {
-    data[i] = data[i].trim().split(" ");
-    if (data[i][0] === "$") {
+  for (let i = 0; i < data.length; i++) {
+    const line = data[i].split(" ");
 
-      if (data[i][2] === "..") {
-        dirStack.pop()
-      } else if (data[i][2]) {
-        dirStack.push(data[i][2])
-        if(!dirs[data[i][2]]) dirs[data[i][2]] = 0
-      } else {
-        i++
-        while (data[i].split(" ")[0] !== "$" && data[i]) {
-          data[i] = data[i].split(" ");
-
-          if (Number.isInteger(+data[i][0])) {
-            for (const dir of dirStack) {
-              dirs[dir] += +data[i][0]
-            }
-          }
-          i++;
+    if (line[0] === "$") {
+      if (line[2] === "..") {
+        dirStack.pop();
+      } else if (line[2]) {
+        dirStack.push(line[2]);
+        if (!dirs[line[2]]) dirs[line[2]] = 0;
+      }
+    } else {
+      if (Number.isInteger(+line[0])) {
+        for (const dir of dirStack) {
+          dirs[dir] += +line[0];
         }
-
-        i--
       }
     }
-
   }
 
   return dirs;
 };
 
 const calculateDirs = async (dirs, maxSize) => {
-  let total = 0
+  let total = 0;
   for (const dir in dirs) {
-    if(dirs[dir] <= maxSize) {
-      total += dirs[dir]
+    if (dirs[dir] <= maxSize) {
+      total += dirs[dir];
     }
   }
 
-  return total
-}
+  return total;
+};
 
 const main = async () => {
   const data = await getData();
+  console.log(data)
   const dirs = await getSize(data);
-  const total = await calculateDirs(dirs, 100000)
+  const total = await calculateDirs(dirs, 100000);
 
   return total;
 };
