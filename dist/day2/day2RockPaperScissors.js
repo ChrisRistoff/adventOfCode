@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const promises_1 = __importDefault(require("fs/promises"));
 const getPlays = () => __awaiter(void 0, void 0, void 0, function* () {
-    const plays = yield promises_1.default.readFile("../../2022/day2/day2data.txt", "utf-8");
+    const plays = yield promises_1.default.readFile(`${__dirname}/../../2022/day2/day2data.txt`, "utf-8");
     const splitPlays = plays.split("\n");
     const finalList = [];
     for (let i = 0; i < splitPlays.length; i++) {

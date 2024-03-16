@@ -1,7 +1,7 @@
 import fs from "fs/promises";
 
 const getListOfElves = async () => {
-  const list = await fs.readFile("../../2022/day1/day1data.txt", "utf-8");
+  const list = await fs.readFile(`${__dirname}/../../2022/day1/day1data.txt`, "utf-8");
   const splitList = list.split("\n");
 
   const finalList = [];

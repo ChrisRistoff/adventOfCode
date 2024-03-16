@@ -1,7 +1,7 @@
 import fs from "fs/promises";
 
 const getPlays = async () => {
-  const plays: string = await fs.readFile("../../2022/day2/day2data.txt", "utf-8");
+  const plays: string = await fs.readFile(`${__dirname}/../../2022/day2/day2data.txt`, "utf-8");
   const splitPlays: string[] = plays.split("\n");
 
   const finalList = [];
