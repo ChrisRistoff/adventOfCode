@@ -1,4 +1,5 @@
 import fs from "fs/promises";
+import { WinnersForOne, PlayValsForOne, PlayValsForTwo, WinnersAndLosers } from "./Interfaces";
 
 const getPlays = async () => {
   const plays: string = await fs.readFile(`${__dirname}/../../2022/day2/day2data.txt`, "utf-8");
@@ -13,23 +14,6 @@ const getPlays = async () => {
   return finalList;
 };
 
-interface WinnersForOne {
-    X: string;
-    Y: string;
-    Z: string;
-    A: string;
-    B: string;
-    C: string;
-    [key: string]: string;
-}
-
-interface PlayValsForOne {
-  X: number;
-  Y: number;
-  Z: number;
-  [key: string]: number;
-}
-
 const calculateScore = (arr: string[] )=> {
   const playVals: PlayValsForOne = { X: 1, Y: 2, Z: 3 };
   const winners: WinnersForOne = { X: "C", Y: "A", Z: "B", A: "Z", B: "X", C: "Y" };
@@ -42,23 +26,6 @@ const calculateScore = (arr: string[] )=> {
     return playVals[arr[1]] + 3;
   }
 };
-
-interface PlayValsForTwo {
-  A: number;
-  B: number;
-  C: number;
-  X: number;
-  Y: number;
-  Z: number;
-  [key: string]: number;
-}
-
-interface WinnersAndLosers {
-  A: string;
-  B: string;
-  C: string;
-  [key: string]: string;
-}
 
 const calculateNewScore = (arr: string[]) => {
   const playVals: PlayValsForTwo = { A: 1, B: 2, C: 3, X: 1, Y: 2, Z: 3 };
