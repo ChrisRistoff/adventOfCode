@@ -1,5 +1,6 @@
 import fs from 'fs/promises';
 import { checkLeft, checkRight, checkDown, checkUp } from './part1helpers';
+import { getLeft, getRight, getUp, getDown } from './part2helpers';
 
 const getData = async (): Promise<string[]> => {
   const data: string = await fs.readFile(`${__dirname}/../../2022/day8/day8data.txt`, 'utf-8');
@@ -29,78 +30,9 @@ const getCount = (data: string[]): number => {
 }
 
 
-const getLeft = (index: number, line: string): number => {
-  let currentTree: string = line[index];
-  let totalView: number = 0;
+const getBestTree = (data: string[]): number=> {
 
-  for (let i = index - 1; i >= 0; i--) {
-    if (currentTree <= line[i]) {
-      totalView++;
-      break;
-    }
-
-    totalView++;
-  }
-
-  return totalView;
-}
-
-
-const getRight = (index: number, line: string): number => {
-  let currentTree: string = line[index];
-  let totalView: number = 0;
-
-  for (let i = index + 1; i < line.length; i++) {
-    if (currentTree <= line[i]) {
-      totalView++;
-      break;
-    }
-
-    totalView++;
-  }
-
-  return totalView;
-}
-
-
-const getUp = (currentLineIndex: number, currentTreeIndex: number, data: string[]): number => {
-  let currentTree: string = data[currentLineIndex][currentTreeIndex];
-  let totalView: number = 0;
-
-  for (let i = currentLineIndex - 1; i >= 0; i--) {
-    if (currentTree <= data[i][currentTreeIndex]) {
-      totalView++;
-      break;
-    }
-
-    totalView++;
-  }
-
-  return totalView;
-}
-
-
-const getDown = (currentLineIndex: number, currentTreeIndex: number, data: string[]): number => {
-  let currentTree: string = data[currentLineIndex][currentTreeIndex];
-  let totalView: number = 0;
-
-  for (let i = currentLineIndex + 1; i < data.length; i++) {
-    if (currentTree <= data[i][currentTreeIndex]) {
-      totalView++;
-      break;
-    }
-
-    totalView++;
-  }
-
-  return totalView;
-}
-
-
-
-const getBestTree = (data: string[]): string => {
-
-  let maxView: number = 0;
+  let bestScenicScore: number = 0;
   let currentBestTree: string = "";
 
   for (let i = 0; i < data.length- 1; i++) {
@@ -110,16 +42,14 @@ const getBestTree = (data: string[]): string => {
 
       totalView = getLeft(j, data[i]) * getRight(j, data[i]) * getUp(i, j, data) * getDown(i, j, data);
 
-      if (totalView > maxView) {
-        maxView = totalView;
+      if (totalView > bestScenicScore) {
+        bestScenicScore = totalView;
         currentBestTree = currentTree;
-
-        console.log("currentBestTree: ", currentBestTree, " maxView: ", maxView, "at line: ", data[i])
       }
     }
   }
 
-  return currentBestTree;
+  return bestScenicScore;
 }
 
 
@@ -128,8 +58,8 @@ const main = async () => {
   const count: number = getCount(data);
   console.log(count, " is the count of trees with a view of the ocean");
 
-  const bestTree: string = getBestTree(data);
-  console.log(bestTree, " is the best tree");
+  const bestTreeScore: number= getBestTree(data);
+  console.log(bestTreeScore, " is the best tree scenic score");
 }
 
 main();
