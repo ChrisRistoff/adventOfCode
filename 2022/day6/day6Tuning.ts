@@ -1,10 +1,7 @@
 import fs from "fs/promises"
+import { parseData } from "../../utils/parseDataFile";
 
-const getData = async () => {
-  const data: string = await fs.readFile(`${__dirname}/../../2022/day6/day6data.txt`, "utf-8")
-
-  return data
-}
+const DATA_FILE_PATH = `${__dirname}/../../2022/day6/day6data.txt`;
 
 const getFirstFour = async (data: string, distinctLetters: number) => {
   let set: Set<string> = new Set()
@@ -23,8 +20,8 @@ const getFirstFour = async (data: string, distinctLetters: number) => {
 }
 
 const main = async () => {
-  const data = await getData()
-  const result = await getFirstFour(data, 14)
+  const data = await parseData(DATA_FILE_PATH);
+  const result = await getFirstFour(data.join('\n'), 14);
 
   return result
 }

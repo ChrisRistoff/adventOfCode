@@ -1,16 +1,9 @@
 import fs from 'fs/promises';
 import { checkLeft, checkRight, checkDown, checkUp } from './part1helpers';
 import { getLeft, getRight, getUp, getDown } from './part2helpers';
+import { parseData } from '../../utils/parseDataFile';
 
-const getData = async (): Promise<string[]> => {
-  const data: string = await fs.readFile(`${__dirname}/../../2022/day8/day8data.txt`, 'utf-8');
-
-  const dataArray = data.split('\n');
-  dataArray.pop();
-
-  return dataArray;
-}
-
+const DATA_FILE_PATH = `${__dirname}/../../2022/day8/day8data.txt`;
 
 const getCount = (data: string[]): number => {
   let count: number = 0;
@@ -54,7 +47,7 @@ const getBestTree = (data: string[]): number=> {
 
 
 const main = async () => {
-  const data: string[] = await getData();
+  const data: string[] = await parseData(DATA_FILE_PATH);
   const count: number = getCount(data);
   console.log(count, " is the count of trees with a view of the ocean");
 
